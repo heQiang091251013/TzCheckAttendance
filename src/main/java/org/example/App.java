@@ -76,17 +76,7 @@ public class App
         List<NameValuePair> parameters = new ArrayList<NameValuePair>(10);
         parameters.add(new BasicNameValuePair("a_date",date));
         parameters.add(new BasicNameValuePair("a_week",week));
-        if(week.equals(weeks[0]) || week.equals(weeks[6])){
-            parameters.add(new BasicNameValuePair("a_calendar","休息日"));
-            parameters.add(new BasicNameValuePair("a_isCost","1"));
-            parameters.add(new BasicNameValuePair("a_workTime",""));
-            parameters.add(new BasicNameValuePair("a_overTime",""));
-            parameters.add(new BasicNameValuePair("a_describe",""));
-            parameters.add(new BasicNameValuePair("design",""));
-            parameters.add(new BasicNameValuePair("TRserial",""));
-            parameters.add(new BasicNameValuePair("XMserial",""));
-            parameters.add(new BasicNameValuePair("KHserial",""));
-        }else{
+        if(!(week.equals(weeks[0]) || week.equals(weeks[6]))){
             parameters.add(new BasicNameValuePair("a_calendar","工作日"));
             parameters.add(new BasicNameValuePair("a_workTime","8"));
             parameters.add(new BasicNameValuePair("a_overTime",""));
