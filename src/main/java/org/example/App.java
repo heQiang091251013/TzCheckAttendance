@@ -11,15 +11,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import static org.example.DateUtil.getWeek;
+import static org.example.DateUtil.weeks;
 
 /**
  * Hello world!
@@ -46,22 +46,51 @@ public class App
         }
         response.close();
 
-        //查找未提交的考勤
-        HttpGet httpGet = new HttpGet("http://kq.topcheer.xyz:8092/Attendance/attendance/check");
-        CloseableHttpResponse checkResponse = httpClient.execute(httpGet);
-        if (checkResponse.getStatusLine().getStatusCode() == 200) {
-            String loginResult = EntityUtils.toString(checkResponse.getEntity(), "utf-8");
-            List<String> list = JSONArray.parseArray(loginResult, String.class);
-            for (String s : list) {
-                String[] split = s.split(":");
-                String date = split[0];
-                String week = getWeek(date);
-                add(date,week,httpClient);
-            }
+//        提交未提交的考情
+        searchUncommitted(httpClient);
 
-        }
+        //提交当月考勤
+        committedCurrentMonth(httpClient);
 
         httpClient.close();
+    }
+
+
+
+    /**
+     * 提交 明天-月底的考勤
+     */
+    public static void committedCurrentMonth( CloseableHttpClient httpClient) throws ParseException, IOException {
+        List<String> currentMonthRemainDays = DateUtil.getCurrentMonthRemainDays();
+        for (String day : currentMonthRemainDays) {
+            add(day,DateUtil.getWeek(day),httpClient);
+        }
+    }
+
+
+    /**
+     * 提交未提交的考情
+     * @param httpClient
+     */
+    public static void searchUncommitted(CloseableHttpClient httpClient){
+        //查找未提交的考勤
+        HttpGet httpGet = new HttpGet("http://kq.topcheer.xyz:8092/Attendance/attendance/check");
+        CloseableHttpResponse checkResponse = null;
+        try {
+            checkResponse = httpClient.execute(httpGet);
+            if (checkResponse.getStatusLine().getStatusCode() == 200) {
+                String loginResult = EntityUtils.toString(checkResponse.getEntity(), "utf-8");
+                List<String> list = JSONArray.parseArray(loginResult, String.class);
+                for (String s : list) {
+                    String[] split = s.split(":");
+                    String date = split[0];
+                    String week = getWeek(date);
+                    add(date,week,httpClient);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -99,20 +128,7 @@ public class App
 
     }
 
-    static String[]  weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
-    /**
-     * 根据日期取得星期几
-     * @param date
-     * @throws ParseException
-     */
-    @Test
-    public static String getWeek(String date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date parse = sdf.parse(date);
-        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
-        String week = dateFm.format(parse);
-        return week;
-    }
+
 
 
 

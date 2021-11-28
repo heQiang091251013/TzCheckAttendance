@@ -1,18 +1,28 @@
 package org.example;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class Test {
     public static void main(String[] args) throws ParseException {
-        System.out.println("1111");
-        String date = "2021/09/07";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date parse = sdf.parse(date);
-        System.out.println(date.toString());
-        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
-        String week = dateFm.format(parse);
-        System.out.println(week);
+
+
+        List<String> list = new ArrayList<>();
+        Calendar aCalendar = Calendar.getInstance(Locale.CHINA);
+        int year = aCalendar.get(Calendar.YEAR);//年份
+        int month = aCalendar.get(Calendar.MONTH) + 1;//月份
+        int day = aCalendar.getActualMaximum(Calendar.DATE);
+        int dateStart = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+1;
+        for (int i = dateStart; i <= day; i++) {
+            String aDate = year +"/"+month+"/"+i;
+            list.add(aDate);
+        }
+
+
+
+
     }
 }
