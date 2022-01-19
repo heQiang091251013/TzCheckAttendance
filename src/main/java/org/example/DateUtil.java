@@ -13,7 +13,7 @@ public class DateUtil {
      * 获取当月剩余天数
      * @return
      */
-    public   static  List<String> getCurrentMonthRemainDays() {
+    public static List<String> getCurrentMonthRemainDays() {
         List<String> list = new ArrayList<String>();
         Calendar aCalendar = Calendar.getInstance(Locale.CHINA);
         int year = aCalendar.get(Calendar.YEAR);//年份
@@ -21,7 +21,9 @@ public class DateUtil {
         int day = aCalendar.getActualMaximum(Calendar.DATE);
         int dateStart = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + 1; //剩余开始天数
         for (int i = dateStart; i <= day; i++) {
-            list.add(year + "/" + month + "/" + i);
+            String datStr = (i < 10) ? "0" + i : String.valueOf(i);
+            String monthStr = (month < 10) ? "0" + month : String.valueOf(month);
+            list.add(year + "/" + monthStr + "/" + datStr);
         }
         return list;
     }

@@ -47,7 +47,7 @@ public class App
         response.close();
 
 //        提交未提交的考情
-        searchUncommitted(httpClient);
+//        searchUncommitted(httpClient);
 
         //提交当月考勤
         committedCurrentMonth(httpClient);
@@ -63,6 +63,7 @@ public class App
     public static void committedCurrentMonth( CloseableHttpClient httpClient) throws ParseException, IOException {
         List<String> currentMonthRemainDays = DateUtil.getCurrentMonthRemainDays();
         for (String day : currentMonthRemainDays) {
+            System.out.println(day);
             add(day,DateUtil.getWeek(day),httpClient);
         }
     }
