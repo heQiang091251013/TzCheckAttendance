@@ -11,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -66,6 +67,7 @@ public class App
             System.out.println(day);
             add(day,DateUtil.getWeek(day),httpClient);
         }
+        BASE64Encoder encoder = new BASE64Encoder();
     }
 
 
@@ -114,7 +116,7 @@ public class App
             parameters.add(new BasicNameValuePair("a_describe","咨询服务提升功能开发"));
             parameters.add(new BasicNameValuePair("design",""));
             parameters.add(new BasicNameValuePair("TRserial","TR0001"));
-            parameters.add(new BasicNameValuePair("XMserial","XM0203"));
+            parameters.add(new BasicNameValuePair("XMserial","XM0232"));
             parameters.add(new BasicNameValuePair("KHserial","KH0002"));
         }
         UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(parameters,"UTF-8");
